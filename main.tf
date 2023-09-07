@@ -12,22 +12,22 @@ provider "yandex" {
 }
 
 resource "yandex_compute_instance" "web-1" {
-  name = "web-1"
+  name = var.server_name_1
 
   resources {
-    cores = 2
-    memory = 2
+    cores = var.num_cpu
+    memory = var.memory
   }
 
   boot_disk {
     initialize_params {
-      image_id = "fd8dqiigupbmq398h0va"
+      image_id = var.bootdisk_image_id
     }
   }
 
   network_interface {
     subnet_id = yandex_vpc_subnet.subnet-1.id
-    nat = true
+    nat = var.enable_nat
   }
 
   metadata = {
@@ -36,16 +36,16 @@ resource "yandex_compute_instance" "web-1" {
 }
 
 resource "yandex_compute_instance" "web-2" {
-  name = "web-2"
+  name = var.server_name_2
 
   resources {
-    cores = 2
-    memory = 2
+    cores = var.num_cpu
+    memory = var.memory
   }
 
   boot_disk {
     initialize_params {
-      image_id = "fd8dqiigupbmq398h0va"
+      image_id = var.bootdisk_image_id
     }
   }
 
@@ -67,7 +67,7 @@ resource "yandex_vpc_subnet" "subnet-1" {
   name = "subnet1"
   zone = "ru-central1-a"
   network_id = yandex_vpc_network.network-1.id
-  v4_cidr_blocks = ["192.168.10.0/24"]
+  v4_cidr_blocks = var.subnet_v4_cidr_blocks
 }
 
 output "internal_ip_address_web_1" {
