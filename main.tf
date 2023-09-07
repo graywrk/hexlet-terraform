@@ -11,6 +11,10 @@ provider "yandex" {
   zone = "ru-central1-a"
 }
 
+data "yandex_compute_image" "img" {
+  family = "ubuntu-2204-lts"
+}
+
 resource "yandex_compute_instance" "web-1" {
   name = var.server_name_1
 
@@ -21,7 +25,7 @@ resource "yandex_compute_instance" "web-1" {
 
   boot_disk {
     initialize_params {
-      image_id = var.bootdisk_image_id
+      image_id = data.yandex_compute_image.img.id
     }
   }
 
@@ -45,7 +49,7 @@ resource "yandex_compute_instance" "web-2" {
 
   boot_disk {
     initialize_params {
-      image_id = var.bootdisk_image_id
+      image_id = data.yandex_compute_image.img.id
     }
   }
 
